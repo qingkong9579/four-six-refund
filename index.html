@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四六级退款</title>
+    <link rel="icon" type="image/webp" href="https://blog.sfunction.top/_astro/avatar.D_xhmqx4_Z1YoImP.webp">
+    <link rel="shortcut icon" type="image/webp" href="https://blog.sfunction.top/_astro/avatar.D_xhmqx4_Z1YoImP.webp">
+    <link rel="apple-touch-icon" href="https://blog.sfunction.top/_astro/avatar.D_xhmqx4_Z1YoImP.webp">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .background-image {
+            background-image: url("https://imgapi.xl0408.top/index.php") !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .default-background {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .title:hover {
+            transform: scale(1.05);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-text {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .emoji-text {
+            font-size: 1.5rem;
+            color: #666;
+            margin: 20px 0;
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .second-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .second-modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            animation: modalAppear 0.5s ease-out;
+        }        .profile-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 5px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            /* text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); */
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .main-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .main-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(45deg, #764ba2, #667eea);
+        }
+
+        .contact-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .contact-title {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-link {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }        .contact-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .contact-link img {
+            filter: brightness(0) invert(1);
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .contact-link:hover img {
+            filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+                padding: 20px 30px;
+            }
+            
+            .modal-content, .second-modal-content {
+                margin: 10px;
+                padding: 30px 20px;
+            }
+            
+            .modal-text {
+                font-size: 1.5rem;
+            }
+
+            .profile-section {
+                padding: 30px 15px;
+            }
+
+            .avatar {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 15px;
+            }
+
+            .profile-title {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .profile-subtitle {
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+
+            .main-link {
+                padding: 12px 30px;
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+
+            .contact-section {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            .contact-links {
+                gap: 10px;
+            }
+
+            .contact-link {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading"></div>
+    
+    <div class="title" id="title" style="display: none;">
+        四六级退款
+    </div>    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-text">
+                你不会真的认为四六级能退款吧 (｡◕∀◕｡)
+            </div>
+            <div class="emoji-text">
+                ╮(╯▽╰)╭ 想得美哦~ <br>
+                (｡･∀･)ﾉﾞ 醒醒吧！<br>
+                ლ(╹◡╹ლ) 不可能的事情啦~
+            </div>
+            <button class="close-btn" onclick="showSecondModal()">
+                好吧，我知道了 (；′⌒`)
+            </button>
+        </div>
+    </div>
+
+    <div class="second-modal" id="secondModal">
+        <div class="second-modal-content">
+            <div class="modal-text">
+                既然来了，不如了解一下作者吧~ (◕‿◕)
+            </div>
+            <div class="emoji-text">
+                ✨ 说不定能找到有趣的东西哦 ✨
+            </div>
+            <button class="close-btn" onclick="showProfile()">
+                好的，看看吧 (´∀｀)
+            </button>
+        </div>
+    </div>    <div class="profile-section" id="profileSection">
+        <img src="https://blog.sfunction.top/_astro/avatar.D_xhmqx4_Z1YoImP.webp" alt="头像" class="avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22><rect width=%22150%22 height=%22150%22 fill=%22%23ddd%22/><text x=%2275%22 y=%2285%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2220%22>头像</text></svg>'">
+        
+        <h1 class="profile-title">微茫之心の小站</h1>
+        <p class="profile-subtitle">
+            欢迎来到我的个人空间<br>
+            分享技术、记录生活、探索世界
+        </p>
+        
+        <a href="https://blog.sfunction.top" target="_blank" class="main-link">
+            📖 点此前往个人博客
+        </a>
+        
+        <div class="contact-section">
+            <p class="contact-title">若对本站有任何意见或建议，敬请联系：</p>
+            <div class="contact-links">
+                <a href="https://www.coolapk.com/u/1073606" target="_blank" class="contact-link">
+                    <img src="https://www.svgrepo.com/show/504239/coolapk.svg" width="32" height="32"> 酷安私信
+                </a>
+                <a href="https://steamcommunity.com/profiles/76561198837891376/" target="_blank" class="contact-link">
+                    <img src="https://www.svgrepo.com/show/473800/steam.svg" width="32" height="32"> Steam 交流
+                </a>
+                <a href="https://github.com/qingkong9579" target="_blank" class="contact-link">
+                    <img src="https://www.svgrepo.com/show/475654/github-color.svg" width="32" height="32"> GitHub 关注
+                </a>
+            </div>
+        </div>
+    </div><script>
+        // 设置背景图片
+        function setBackgroundImage() {
+            try {
+                // 直接应用背景图片类
+                document.body.classList.add('background-image');
+                
+                // 创建一个图片对象来检测API是否可用
+                const testImg = new Image();
+                testImg.onload = function() {
+                    // 图片加载成功，隐藏加载动画
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('title').style.display = 'block';
+                };
+                testImg.onerror = function() {
+                    // 图片加载失败，使用默认背景
+                    document.body.classList.remove('background-image');
+                    document.body.classList.add('default-background');
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('title').style.display = 'block';
+                };
+                // 添加时间戳避免缓存
+                testImg.src = 'https://imgapi.xl0408.top/index.php?t=' + Date.now();
+            } catch (error) {
+                console.error('设置背景图片失败:', error);
+                // 使用默认背景
+                document.body.classList.add('default-background');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('title').style.display = 'block';
+            }
+        }        // 显示弹窗
+        function showModal() {
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        // 关闭弹窗，显示第二个弹窗
+        function showSecondModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('secondModal').style.display = 'flex';
+        }
+
+        // 关闭第二个弹窗，显示个人资料
+        function showProfile() {
+            document.getElementById('secondModal').style.display = 'none';
+            document.getElementById('title').style.display = 'none';
+            document.getElementById('profileSection').style.display = 'flex';
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('secondModal').style.display = 'none';
+        }
+
+        // 点击标题显示弹窗
+        document.getElementById('title').addEventListener('click', showModal);        // 点击弹窗背景关闭弹窗
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('secondModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });// 页面加载时设置背景图片
+        window.addEventListener('load', setBackgroundImage);
+    </script>
+</body>
+</html>
