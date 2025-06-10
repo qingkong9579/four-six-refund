@@ -208,6 +208,11 @@
             box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
             background: linear-gradient(45deg, #764ba2, #667eea);
         }
+        
+        .main-link[style*="linear-gradient(45deg, #ff9a56, #ff6b35)"]:hover {
+            background: linear-gradient(45deg, #ff6b35, #ff9a56) !important;
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6) !important;
+        }
 
         .contact-section {
             background: rgba(0, 0, 0, 0.3);
@@ -376,10 +381,21 @@
         <a href="https://blog.sfunction.top" target="_blank" class="main-link">
             📖 点此前往个人博客
         </a>
+          <a href="https://cet-kw.neea.edu.cn/Home/QuickPrintTestTicket" target="_blank" class="main-link" style="background: linear-gradient(45deg, #ff9a56, #ff6b35); box-shadow: 0 10px 30px rgba(255, 155, 86, 0.4);">
+            🎫 四六级准考证打印
+        </a>
+        
+        <div style="text-align: center; color: white; margin-bottom: 30px;">
+            <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+                📅 四六级考试倒计时
+            </div>
+            <div id="countdown" style="color: #ff6b35; font-size: 16px; font-weight: bold; background: rgba(0, 0, 0, 0.3); padding: 10px 20px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                正在计算...
+            </div>
+        </div>
         
         <div class="contact-section">
-            <p class="contact-title">若对本站有任何意见或建议，敬请联系：</p>
-            <div class="contact-links">
+            <p class="contact-title">若对本站有任何意见或建议，敬请联系：</p>            <div class="contact-links">
                 <a href="https://www.coolapk.com/u/1073606" target="_blank" class="contact-link">
                     <img src="https://www.svgrepo.com/show/504239/coolapk.svg" width="32" height="32"> 酷安私信
                 </a>
@@ -389,6 +405,16 @@
                 <a href="https://github.com/qingkong9579" target="_blank" class="contact-link">
                     <img src="https://www.svgrepo.com/show/475654/github-color.svg" width="32" height="32"> GitHub 关注
                 </a>
+            </div>
+        </div>        <div class="info-section">
+            <div style="font-size: 13px; font-weight: bold; color: white; text-align: center; margin-top: 30px;">
+                <br />
+                当前时间：
+                <span id="current_time" style="color: #409EFF;">
+                </span>
+                <br />
+                <!--显示访客ip-->
+                <p style="text-align: center" id="welcome"></p>
             </div>
         </div>
     </div><script>
@@ -464,8 +490,48 @@
             if (e.key === 'Escape') {
                 closeModal();
             }
-        });// 页面加载时设置背景图片
+        });        // 页面加载时设置背景图片
         window.addEventListener('load', setBackgroundImage);
+        
+        // 四六级考试倒计时功能
+        function updateCountdown() {
+            const examDate = new Date('2025-06-14 09:00:00');
+            const now = new Date();
+            const timeDiff = examDate - now;
+            
+            const countdownElement = document.getElementById('countdown');
+            
+            if (timeDiff <= 0) {
+                countdownElement.innerHTML = '考试已结束';
+                countdownElement.style.color = '#999';
+                return;
+            }
+            
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            
+            countdownElement.innerHTML = `${days}天 ${hours}小时 ${minutes}分钟 ${seconds}秒`;
+        }
+        
+        // 更新时间显示
+        function updateTime() {
+            document.getElementById("current_time").innerHTML = new Date().toLocaleString();
+            updateCountdown();
+        }
+        
+        // 每秒更新时间和倒计时
+        setInterval(updateTime, 1000);
+        
+        // 初始化时间显示
+        updateTime();
     </script>
+    
+    <!-- 获取访客ip -->
+    <script src="https://cdn.jsdmirror.cn/gh/lm379look/lm379look@main/getip.js"></script>
+    <script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=String.prototype.replaceAll"></script>
+    
+    <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f8eea1ec0a1d4400b03ed0410bcea48f"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

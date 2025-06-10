@@ -2,6 +2,11 @@
 
 一个有趣的恶搞网页，以"四六级退款"为噱头，最终展示个人信息的创意主页。
 
+## 🌐 在线演示
+
+- **GitHub仓库**：https://github.com/qingkong9579/four-six-refund
+- **在线预览**：https://cet4-6.sfunction.top/
+
 ## 🎯 项目简介
 
 这是一个创意满满的个人主页项目，通过三个阶段的交互设计，从恶搞开始，逐步引导用户了解作者：
@@ -69,10 +74,10 @@ four-six/
 
 支持部署到任何静态网站托管平台：
 
+- **Cloudflare Pages** ⭐ 推荐
 - **GitHub Pages**
 - **Vercel** 
 - **Netlify**
-- **Cloudflare Pages**
 
 ## 🎮 使用说明
 
